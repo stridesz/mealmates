@@ -8,6 +8,12 @@ async function appendToSheet(email: string): Promise<void> {
   const privateKey = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n");
   const sheetId = process.env.GOOGLE_SHEET_ID;
 
+  console.log("[MealMates] Env check:", {
+    hasEmail: !!serviceAccountEmail,
+    hasKey: !!privateKey,
+    hasSheetId: !!sheetId,
+  });
+
   if (!serviceAccountEmail || !privateKey || !sheetId) {
     // Env vars not configured — log and skip sheet write
     console.log("[MealMates] Waitlist signup (no sheet configured):", email);
