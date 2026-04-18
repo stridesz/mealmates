@@ -5,13 +5,13 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "MealMates – Eat Out. Save Together.",
+  title: "Tablr – Fork it, lets go.",
   description:
-    "MealMates helps college students get exclusive restaurant discounts just by dining out in groups. Join the waitlist today.",
+    "Tablr is coming. Join the waitlist.",
   openGraph: {
-    title: "MealMates – Eat Out. Save Together.",
+    title: "Tablr – Fork it, lets go.",
     description:
-      "Get exclusive restaurant discounts when you dine out with your crew. Built for college students.",
+      "Tablr is coming. Join the waitlist.",
     type: "website",
   },
 };
