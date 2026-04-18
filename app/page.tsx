@@ -4,19 +4,27 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 
 export default function Home() {
-  const [splashVisible, setSplashVisible] = useState(true);
-  const [splashFading, setSplashFading] = useState(false);
+  const [dots, setDots] = useState(6);
+  const [, setSplashFading] = useState(false);
+  const [splashGone, setSplashGone] = useState(false);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    const fadeTimer = setTimeout(() => setSplashFading(true), 2500);
-    const hideTimer = setTimeout(() => setSplashVisible(false), 3300);
-    return () => {
-      clearTimeout(fadeTimer);
-      clearTimeout(hideTimer);
-    };
+    const interval = setInterval(() => {
+      setDots((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          setTimeout(() => setSplashFading(true), 0);
+          setTimeout(() => setSplashGone(true), 600);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 333); // 6 dots × 333ms ≈ 2 seconds total
+
+    return () => clearInterval(interval);
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -50,24 +58,27 @@ export default function Home() {
   return (
     <>
       {/* Animated background */}
-      <div className="tablr-bg" aria-hidden="true" />
+      {!splashGone && <div className="bg-base" aria-hidden="true" />}
+      <div className="bg-overlay" aria-hidden="true" />
 
       {/* Splash screen */}
-      {splashVisible && (
-        <div
-          className="splash-overlay"
-          style={{ opacity: splashFading ? 0 : 1 }}
-          aria-hidden="true"
-        >
+      {!splashGone && (
+        <div className="splash-overlay" aria-hidden="true">
           <p className="splash-text">Every meal is better shared</p>
+          <div className="dots-row">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <span
+                key={i}
+                className="dot"
+                style={{ opacity: i < dots ? 1 : 0 }}
+              />
+            ))}
+          </div>
         </div>
       )}
 
       {/* Main page */}
-      <div
-        className="page-wrapper"
-        style={{ opacity: splashVisible ? 0 : 1, transition: "opacity 0.6s ease" }}
-      >
+      <div className="page-wrapper">
         {/* Navbar */}
         <nav className="navbar">
           <div className="nav-logo">
@@ -136,24 +147,48 @@ export default function Home() {
         html, body {
           height: 100%;
           font-family: 'Inter', system-ui, sans-serif;
-          background: #1a1008;
+          background: #ffffff;
           overflow-x: hidden;
         }
 
         /* ── Animated background ── */
-        .tablr-bg {
+        .bg-base {
           position: fixed;
           inset: 0;
           z-index: 0;
-          background: radial-gradient(ellipse 80% 60% at 30% 40%, #3d1f00 0%, #1a1008 55%, #0d0804 100%);
-          animation: bgDrift 18s ease-in-out infinite alternate;
+          background: #ffffff;
         }
 
-        @keyframes bgDrift {
-          0%   { background: radial-gradient(ellipse 80% 60% at 30% 40%, #3d1f00 0%, #1a1008 55%, #0d0804 100%); }
-          33%  { background: radial-gradient(ellipse 70% 65% at 65% 30%, #4a2200 0%, #1a1008 55%, #0a0703 100%); }
-          66%  { background: radial-gradient(ellipse 90% 55% at 20% 70%, #2e1800 0%, #1c1209 55%, #0d0804 100%); }
-          100% { background: radial-gradient(ellipse 75% 70% at 55% 55%, #3a1b00 0%, #1a1008 50%, #0b0703 100%); }
+        .bg-overlay {
+          position: fixed;
+          inset: 0;
+          z-index: 0;
+          background:
+            radial-gradient(circle at 50% 50%, rgba(52, 199, 89, 0.08) 0%, transparent 50%),
+            radial-gradient(circle at 20% 80%, rgba(52, 199, 89, 0.05) 0%, transparent 40%),
+            radial-gradient(circle at 80% 20%, rgba(52, 199, 89, 0.06) 0%, transparent 40%);
+          animation: patternDrift 12s ease-in-out infinite alternate;
+        }
+
+        @keyframes patternDrift {
+          0% {
+            background:
+              radial-gradient(circle at 50% 50%, rgba(52, 199, 89, 0.08) 0%, transparent 50%),
+              radial-gradient(circle at 20% 80%, rgba(52, 199, 89, 0.05) 0%, transparent 40%),
+              radial-gradient(circle at 80% 20%, rgba(52, 199, 89, 0.06) 0%, transparent 40%);
+          }
+          50% {
+            background:
+              radial-gradient(circle at 60% 40%, rgba(52, 199, 89, 0.10) 0%, transparent 50%),
+              radial-gradient(circle at 30% 70%, rgba(52, 199, 89, 0.07) 0%, transparent 40%),
+              radial-gradient(circle at 70% 30%, rgba(52, 199, 89, 0.04) 0%, transparent 40%);
+          }
+          100% {
+            background:
+              radial-gradient(circle at 40% 60%, rgba(52, 199, 89, 0.07) 0%, transparent 50%),
+              radial-gradient(circle at 70% 30%, rgba(52, 199, 89, 0.06) 0%, transparent 40%),
+              radial-gradient(circle at 25% 75%, rgba(52, 199, 89, 0.05) 0%, transparent 40%);
+          }
         }
 
         /* ── Splash ── */
@@ -162,21 +197,37 @@ export default function Home() {
           inset: 0;
           z-index: 100;
           display: flex;
+          flex-direction: column;
           align-items: center;
           justify-content: center;
-          background: #0e0905;
-          transition: opacity 0.8s ease;
-          pointer-events: none;
+          background: #ffffff;
+          gap: 2rem;
+          transition: opacity 0.6s ease;
         }
 
         .splash-text {
-          color: #fff;
-          font-size: clamp(1.5rem, 4vw, 2.8rem);
-          font-weight: 300;
-          letter-spacing: 0.02em;
+          color: #34C759;
+          font-size: clamp(1.4rem, 4vw, 2.5rem);
+          font-weight: 500;
+          letter-spacing: 0.01em;
           text-align: center;
           padding: 0 2rem;
           font-family: Georgia, 'Times New Roman', serif;
+        }
+
+        .dots-row {
+          display: flex;
+          gap: 0.6rem;
+          align-items: center;
+        }
+
+        .dot {
+          display: block;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #34C759;
+          transition: opacity 0.25s ease;
         }
 
         /* ── Page wrapper ── */
@@ -204,14 +255,14 @@ export default function Home() {
 
         .logo-img {
           object-fit: contain;
-          border-radius: 6px;
+          border-radius: 10px;
         }
 
         .wordmark {
-          font-size: 1.1rem;
-          font-weight: 600;
-          color: #fff;
-          letter-spacing: 0.06em;
+          font-size: 1rem;
+          font-weight: 700;
+          color: #34C759;
+          letter-spacing: 0.08em;
           text-transform: uppercase;
         }
 
@@ -232,14 +283,13 @@ export default function Home() {
 
         .hero-logo-img {
           object-fit: contain;
-          border-radius: 12px;
-          box-shadow: 0 0 40px rgba(168, 230, 163, 0.08);
+          border-radius: 16px;
         }
 
         .tagline {
-          font-size: 0.85rem;
-          color: rgba(255, 255, 255, 0.35);
-          letter-spacing: 0.12em;
+          font-size: 0.8rem;
+          color: rgba(52, 199, 89, 0.45);
+          letter-spacing: 0.14em;
           text-transform: lowercase;
           margin-bottom: 2.5rem;
         }
@@ -262,21 +312,22 @@ export default function Home() {
         .email-input {
           flex: 1;
           padding: 0.8rem 1rem;
-          background: rgba(255, 255, 255, 0.06);
-          border: 1px solid rgba(255, 255, 255, 0.12);
+          background: #ffffff;
+          border: 1.5px solid rgba(52, 199, 89, 0.3);
           border-radius: 10px;
-          color: #fff;
+          color: #1a1a1a;
           font-size: 0.9rem;
           outline: none;
-          transition: border-color 0.2s;
+          transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         .email-input::placeholder {
-          color: rgba(255, 255, 255, 0.3);
+          color: rgba(0, 0, 0, 0.3);
         }
 
         .email-input:focus {
-          border-color: #a8e6a3;
+          border-color: #34C759;
+          box-shadow: 0 0 0 3px rgba(52, 199, 89, 0.12);
         }
 
         .email-input:disabled {
@@ -285,19 +336,24 @@ export default function Home() {
 
         .cta-btn {
           padding: 0.8rem 1.5rem;
-          background: #a8e6a3;
-          color: #0e1f0d;
+          background: #34C759;
+          color: #ffffff;
           font-size: 0.9rem;
           font-weight: 600;
           border: none;
           border-radius: 10px;
           cursor: pointer;
-          transition: background 0.2s, opacity 0.2s;
+          transition: background 0.2s, opacity 0.2s, transform 0.1s;
           white-space: nowrap;
         }
 
         .cta-btn:hover:not(:disabled) {
-          background: #8fda8a;
+          background: #2db84e;
+          transform: translateY(-1px);
+        }
+
+        .cta-btn:active:not(:disabled) {
+          transform: translateY(0);
         }
 
         .cta-btn:disabled {
@@ -309,15 +365,14 @@ export default function Home() {
         .feedback {
           margin-top: 1rem;
           font-size: 0.8rem;
-          letter-spacing: 0.02em;
         }
 
         .feedback-success {
-          color: #a8e6a3;
+          color: #34C759;
         }
 
         .feedback-error {
-          color: #f87171;
+          color: #ff3b30;
         }
 
         /* ── Footer ── */
@@ -325,7 +380,7 @@ export default function Home() {
           padding: 1.5rem;
           text-align: center;
           font-size: 0.75rem;
-          color: rgba(255, 255, 255, 0.2);
+          color: rgba(0, 0, 0, 0.2);
           letter-spacing: 0.04em;
         }
       `}</style>
