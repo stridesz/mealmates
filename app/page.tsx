@@ -549,6 +549,11 @@ export default function Home() {
         <div className="mesh mesh-one" />
         <div className="mesh mesh-two" />
         <div className="mesh mesh-three" />
+        <div className="mesh mesh-four" />
+        <div className="orb orb-one" />
+        <div className="orb orb-two" />
+        <div className="orb orb-three" />
+        <div className="orb orb-four" />
         <div className="floating-dot dot-one" />
         <div className="floating-dot dot-two" />
         <div className="floating-dot dot-three" />
@@ -671,7 +676,7 @@ export default function Home() {
               <div className="how-card reveal reveal-delay-0">
                 <div className="how-number">1</div>
                 <h3>Drop your email & interests</h3>
-                <p>Tell us your school, what you&apos;re into, and what you&apos;re trying to gain.</p>
+                <p>Tell us your school, what you&apos;re into, and what you&apos;re looking for.</p>
               </div>
               <div className="how-card reveal reveal-delay-1">
                 <div className="how-number">2</div>

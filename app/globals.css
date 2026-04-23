@@ -19,30 +19,76 @@ button, input { font: inherit; }
 .background-scene {
   position: fixed; inset: 0; z-index: 0; overflow: hidden;
   background:
-    radial-gradient(circle at top left, rgba(255,255,255,0.95), transparent 34%),
-    linear-gradient(180deg, #f4fff5 0%, #effff1 48%, #f8fff8 100%);
+    radial-gradient(ellipse 80% 60% at 20% 20%, rgba(220,255,230,0.7), transparent 60%),
+    radial-gradient(ellipse 70% 50% at 80% 80%, rgba(255,245,220,0.6), transparent 55%),
+    radial-gradient(ellipse 60% 80% at 50% 50%, rgba(240,255,245,0.5), transparent 50%),
+    linear-gradient(135deg, #f6fff7 0%, #f0fdf4 35%, #fffbf0 70%, #f4fff5 100%);
+  background-size: 200% 200%;
+  animation: aurora 18s ease-in-out infinite alternate;
 }
-.mesh, .floating-dot, .grid-fade { position: absolute; pointer-events: none; }
-.mesh { filter: blur(36px); opacity: 0.7; border-radius: 999px; animation: drift 16s ease-in-out infinite alternate; }
-.mesh-one { top: -8%; left: -8%; width: 28rem; height: 28rem;
-  background: radial-gradient(circle, rgba(52,199,89,0.24), rgba(52,199,89,0.06) 58%, transparent 72%); }
-.mesh-two { top: 24%; right: -10%; width: 26rem; height: 26rem; animation-duration: 20s;
-  background: radial-gradient(circle, rgba(52,199,89,0.18), rgba(52,199,89,0.05) 58%, transparent 72%); }
-.mesh-three { bottom: -14%; left: 28%; width: 24rem; height: 24rem; animation-duration: 22s;
-  background: radial-gradient(circle, rgba(255,149,0,0.14), rgba(255,149,0,0.04) 55%, transparent 75%); }
-.floating-dot { border-radius: 999px; opacity: 0.55; animation: bob 10s ease-in-out infinite; }
-.dot-one { top: 16%; left: 12%; width: 14px; height: 14px; background: rgba(52,199,89,0.45); }
-.dot-two { top: 42%; right: 14%; width: 10px; height: 10px; background: rgba(255,149,0,0.5); animation-delay: -2s; }
-.dot-three { bottom: 18%; left: 22%; width: 12px; height: 12px; background: rgba(52,199,89,0.32); animation-delay: -4s; }
+@keyframes aurora {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 100%; }
+}
+
+.mesh, .floating-dot, .grid-fade, .orb { position: absolute; pointer-events: none; }
+
+.mesh {
+  filter: blur(60px);
+  opacity: 0.55;
+  border-radius: 999px;
+  animation: drift 20s ease-in-out infinite alternate;
+  mix-blend-mode: multiply;
+}
+.mesh-one {
+  top: -12%; left: -10%; width: 36rem; height: 36rem;
+  background: radial-gradient(circle, rgba(52,199,89,0.28), rgba(52,199,89,0.06) 55%, transparent 72%);
+  animation-duration: 22s;
+}
+.mesh-two {
+  top: 30%; right: -14%; width: 32rem; height: 32rem; animation-duration: 26s;
+  background: radial-gradient(circle, rgba(34,197,94,0.20), rgba(34,197,94,0.04) 55%, transparent 72%);
+}
+.mesh-three {
+  bottom: -18%; left: 20%; width: 30rem; height: 30rem; animation-duration: 24s;
+  background: radial-gradient(circle, rgba(255,149,0,0.16), rgba(255,149,0,0.04) 55%, transparent 72%);
+}
+.mesh-four {
+  top: 55%; left: -5%; width: 28rem; height: 28rem; animation-duration: 28s;
+  background: radial-gradient(circle, rgba(52,199,89,0.14), rgba(52,199,89,0.03) 55%, transparent 72%);
+}
+
+.orb {
+  border-radius: 999px;
+  filter: blur(20px);
+  animation: orbFloat 14s ease-in-out infinite;
+}
+.orb-one { top: 12%; left: 8%; width: 120px; height: 120px; background: rgba(52,199,89,0.18); animation-delay: 0s; }
+.orb-two { top: 38%; right: 10%; width: 90px; height: 90px; background: rgba(255,149,0,0.14); animation-delay: -4s; animation-duration: 18s; }
+.orb-three { bottom: 22%; left: 18%; width: 110px; height: 110px; background: rgba(52,199,89,0.12); animation-delay: -8s; animation-duration: 16s; }
+.orb-four { top: 65%; right: 25%; width: 80px; height: 80px; background: rgba(34,197,94,0.10); animation-delay: -2s; animation-duration: 20s; }
+
+@keyframes orbFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(20px, -30px) scale(1.08); }
+  66% { transform: translate(-15px, 15px) scale(0.95); }
+}
+
+.floating-dot { border-radius: 999px; opacity: 0.45; animation: bob 12s ease-in-out infinite; }
+.dot-one { top: 18%; left: 14%; width: 16px; height: 16px; background: rgba(52,199,89,0.40); }
+.dot-two { top: 44%; right: 16%; width: 12px; height: 12px; background: rgba(255,149,0,0.45); animation-delay: -3s; }
+.dot-three { bottom: 20%; left: 24%; width: 14px; height: 14px; background: rgba(52,199,89,0.30); animation-delay: -6s; }
+
 .grid-fade {
   inset: 0;
   background-image:
-    linear-gradient(rgba(13,38,20,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(13,38,20,0.04) 1px, transparent 1px);
-  background-size: 40px 40px;
-  mask-image: radial-gradient(circle at center, black 26%, transparent 80%);
-  opacity: 0.32;
-  animation: pulse 10s ease-in-out infinite alternate;
+    linear-gradient(rgba(13,38,20,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(13,38,20,0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
+  opacity: 0.25;
+  animation: pulse 12s ease-in-out infinite alternate;
 }
 
 .splash-overlay {
