@@ -671,7 +671,7 @@ export default function Home() {
               <div className="how-card reveal reveal-delay-0">
                 <div className="how-number">1</div>
                 <h3>Drop your email & interests</h3>
-                <p>Tell us your school, what you're into, and when you usually eat. Takes 30 seconds.</p>
+                <p>Tell us your school, what you&apos;re into, and when you usually eat. Takes 30 seconds.</p>
               </div>
               <div className="how-card reveal reveal-delay-1">
                 <div className="how-number">2</div>
@@ -681,7 +681,7 @@ export default function Home() {
               <div className="how-card reveal reveal-delay-2">
                 <div className="how-number">3</div>
                 <h3>Show up, eat, and actually meet people</h3>
-                <p>RSVP, walk in, and sit down with people you'd never run into otherwise. No apps, no small talk — just food.</p>
+                <p>RSVP, walk in, and sit down with people you&apos;d never run into otherwise. No apps, no small talk — just food.</p>
               </div>
             </div>
           </section>
