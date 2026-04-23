@@ -546,6 +546,7 @@ export default function Home() {
         </main>
 
         <footer className="footer">
+          <p>Built by students, for students.</p>
           <p>© 2026 Tablr.</p>
         </footer>
       </div>
