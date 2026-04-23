@@ -157,7 +157,7 @@ const FEEDS: Record<string, Meet[]> = {
   ],
 };
 
-function Avatar({ initials, color, size = 24 }: { initials: string; color: string; size?: number }) {
+function Avatar({ initials, color, size = 26 }: { initials: string; color: string; size?: number }) {
   return (
     <div
       style={{
@@ -172,7 +172,7 @@ function Avatar({ initials, color, size = 24 }: { initials: string; color: strin
         alignItems: "center",
         justifyContent: "center",
         border: "2px solid #fff",
-        boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
+        boxShadow: "0 1px 4px rgba(0,0,0,0.12)",
         flexShrink: 0,
       }}
     >
@@ -183,14 +183,14 @@ function Avatar({ initials, color, size = 24 }: { initials: string; color: strin
 
 function AvatarStack({ people, extra }: { people: Person[]; extra: number | null }) {
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: "flex", alignItems: "center" }}>
       {people.map((p, i) => (
-        <div key={i} style={{ marginLeft: i === 0 ? 0 : -8 }}>
+        <div key={i} style={{ marginLeft: i === 0 ? 0 : -9, zIndex: people.length - i }}>
           <Avatar initials={p.initials} color={p.color} />
         </div>
       ))}
       {extra != null && (
-        <div style={{ marginLeft: -8 }}>
+        <div style={{ marginLeft: -9, zIndex: 0 }}>
           <Avatar initials={`+${extra}`} color="#94a3b8" />
         </div>
       )}
@@ -205,13 +205,14 @@ function TagChip({ kind, children }: { kind: string; children: React.ReactNode }
       style={{
         display: "inline-flex",
         alignItems: "center",
-        padding: "4px 9px",
-        borderRadius: 8,
-        fontSize: 11.5,
+        padding: "3px 10px",
+        borderRadius: 999,
+        fontSize: 11,
         fontWeight: 600,
         background: s.bg,
         color: s.fg,
         whiteSpace: "nowrap",
+        letterSpacing: "0.01em",
       }}
     >
       {children}
@@ -220,24 +221,33 @@ function TagChip({ kind, children }: { kind: string; children: React.ReactNode }
 }
 
 function MeetCard({ meet }: { meet: Meet }) {
+  const accentColor = meet.tags[0]?.kind === "alert" ? "#FF9500" : meet.people[0]?.color || "#34C759";
   return (
     <div
       style={{
         background: "#fff",
-        borderRadius: 18,
-        padding: 14,
-        border: "1px solid rgba(0,0,0,0.06)",
-        boxShadow: "0 2px 8px rgba(13,38,20,0.06)",
+        borderRadius: 20,
+        padding: "14px 16px",
+        border: "1px solid rgba(0,0,0,0.04)",
+        boxShadow: "0 2px 12px rgba(13,38,20,0.06), 0 0 1px rgba(0,0,0,0.04)",
+        position: "relative",
+        overflow: "hidden",
       }}
     >
-      <div style={{ fontWeight: 700, fontSize: 14.5, color: "#0d2614", letterSpacing: "-0.01em" }}>
-        {meet.title}
+      <div style={{ position: "absolute", left: 0, top: 14, bottom: 14, width: 3, borderRadius: "0 4px 4px 0", background: accentColor }} />
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", paddingLeft: 8 }}>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontWeight: 700, fontSize: 14.5, color: "#0d2614", letterSpacing: "-0.01em", lineHeight: 1.3 }}>
+            {meet.title}
+          </div>
+          <div style={{ color: "rgba(13,38,20,0.55)", fontSize: 12, marginTop: 3, fontWeight: 500 }}>{meet.meta}</div>
+        </div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(13,38,20,0.15)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
       </div>
-      <div style={{ color: "rgba(13,38,20,0.6)", fontSize: 12.5, marginTop: 2 }}>{meet.meta}</div>
-      <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 8 }}>
+      <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 8, paddingLeft: 8 }}>
         <AvatarStack people={meet.people} extra={meet.extra} />
       </div>
-      <div style={{ marginTop: 9, display: "flex", gap: 5, flexWrap: "wrap" }}>
+      <div style={{ marginTop: 9, display: "flex", gap: 5, flexWrap: "wrap", paddingLeft: 8 }}>
         {meet.tags.map((t, i) => (
           <TagChip key={i} kind={t.kind}>
             {t.label}
@@ -261,7 +271,14 @@ function DiscoverPhone() {
     <div className="phone">
       <div className="phone-inner">
         <div className="phone-notch" />
-        <div className="phone-status">9:41</div>
+        <div className="phone-status-bar">
+          <span>9:41</span>
+          <div className="phone-status-icons">
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M1 9h2v2H1zm3-2h2v4H4zm3-2h2v6H7zm3-2h2v8h-2zm3-3h2v11h-2z"/></svg>
+            <svg width="14" height="10" viewBox="0 0 14 10" fill="currentColor"><path d="M7 0C3.5 0 1 2 0 3.5L7 10l7-6.5C13 2 10.5 0 7 0z"/></svg>
+            <svg width="22" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="1" y="1" width="17" height="8" rx="2"/><rect x="3" y="3" width="12" height="4" rx="1" fill="currentColor"/><path d="M19 3.5v3"/></svg>
+          </div>
+        </div>
 
         <div className="phone-header">
           <div className="phone-header-row">
@@ -292,6 +309,21 @@ function DiscoverPhone() {
             {FEEDS[tab].map((m, i) => (
               <MeetCard key={tab + i} meet={m} />
             ))}
+          </div>
+        </div>
+
+        <div className="phone-bottom-nav">
+          <div className="phone-nav-item active">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <span>Discover</span>
+          </div>
+          <div className="phone-nav-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span>Chat</span>
+          </div>
+          <div className="phone-nav-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Profile</span>
           </div>
         </div>
       </div>
