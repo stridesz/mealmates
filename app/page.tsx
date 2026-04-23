@@ -662,6 +662,30 @@ export default function Home() {
             </div>
           </section>
 
+          <section className="how-it-works reveal">
+            <div className="how-intro">
+              <p className="section-label">How it works</p>
+              <h2>From email to table in three steps</h2>
+            </div>
+            <div className="how-grid">
+              <div className="how-card reveal reveal-delay-0">
+                <div className="how-number">1</div>
+                <h3>Drop your email & interests</h3>
+                <p>Tell us your school, what you're into, and when you usually eat. Takes 30 seconds.</p>
+              </div>
+              <div className="how-card reveal reveal-delay-1">
+                <div className="how-number">2</div>
+                <h3>Find a table that fits your plans</h3>
+                <p>Browse hangs happening tonight or this week. Pick one that matches your vibe, major, or cravings.</p>
+              </div>
+              <div className="how-card reveal reveal-delay-2">
+                <div className="how-number">3</div>
+                <h3>Show up, eat, and actually meet people</h3>
+                <p>RSVP, walk in, and sit down with people you'd never run into otherwise. No apps, no small talk — just food.</p>
+              </div>
+            </div>
+          </section>
+
           <section className="proof-section reveal">
             <div className="proof-intro">
               <p className="section-label">Why it hits different</p>
