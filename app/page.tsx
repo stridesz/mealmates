@@ -294,21 +294,21 @@ function ChatScreen() {
 }
 
 function ProfileScreen() {
-  const interests = ["Startups", "Foodie", "K-Dramas", "Design", "Tennis"];
+  const interests = ["Startups", "Foodie", "Barbering", "Basketball", "Drake"];
   return (
     <div style={{ padding: "10px 14px 20px" }}>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "16px 0" }}>
         <div style={{ width: 64, height: 64, borderRadius: 999, background: "linear-gradient(135deg, #22C55E, #16a34a)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 24, fontWeight: 800, border: "3px solid #fff", boxShadow: "0 4px 16px rgba(34,197,94,0.3)" }}>
-          VQ
+          PD
         </div>
-        <div style={{ fontSize: 17, fontWeight: 800, color: "#0d2614", marginTop: 10, letterSpacing: "-0.02em" }}>Victor</div>
-        <div style={{ fontSize: 12, color: "rgba(13,38,20,0.5)", marginTop: 2, fontWeight: 500 }}>Northeastern · Business</div>
+        <div style={{ fontSize: 17, fontWeight: 800, color: "#0d2614", marginTop: 10, letterSpacing: "-0.02em" }}>Peter</div>
+        <div style={{ fontSize: 12, color: "rgba(13,38,20,0.5)", marginTop: 2, fontWeight: 500 }}>NYU · Business</div>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginBottom: 16 }}>
         {[
           { label: "Tables", val: "12" },
-          { label: "Matches", val: "34" },
+          { label: "Connections", val: "13" },
           { label: "Streak", val: "5" },
         ].map((s, i) => (
           <div key={i} style={{ textAlign: "center", padding: "10px 0", borderRadius: 14, background: "#fff", border: "1px solid rgba(0,0,0,0.04)", boxShadow: "0 2px 8px rgba(13,38,20,0.04)" }}>
@@ -477,8 +477,8 @@ const SCHOOLS = [
   { name: "Duke", italic: false },
   { name: "USC", italic: true },
   { name: "Northeastern", italic: false },
-  { name: "BU", italic: true },
-  { name: "BC", italic: false },
+  { name: "Georgetown", italic: true },
+  { name: "Vanderbilt", italic: false },
   { name: "Michigan", italic: true },
   { name: "Florida", italic: false },
   { name: "Rutgers", italic: true },
