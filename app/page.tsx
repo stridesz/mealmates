@@ -492,12 +492,65 @@ const SCHOOLS = [
   { name: "Georgia Tech", italic: false },
 ];
 
+type QuestionnaireAnswers = {
+  year: string;
+  tableTypes: string[];
+  peopleToMeet: string[];
+  peopleOther: string;
+  awkwardReasons: string[];
+  awkwardOther: string;
+  anythingElse: string;
+};
+
+const INITIAL_QUESTIONNAIRE: QuestionnaireAnswers = {
+  year: "",
+  tableTypes: [],
+  peopleToMeet: [],
+  peopleOther: "",
+  awkwardReasons: [],
+  awkwardOther: "",
+  anythingElse: "",
+};
+
+const YEAR_OPTIONS = ["Freshman", "Sophomore", "Junior", "Senior", "Grad student"];
+const TABLE_TYPE_OPTIONS = [
+  "1-on-1 coffee",
+  "3–4 person casual meal",
+  "5–6 person group dinner",
+  "Study + food",
+  "Late-night food run",
+  "Post-event food",
+];
+const PEOPLE_OPTIONS = [
+  "People in my year",
+  "People with similar interests",
+  "People in my major",
+  "People new to campus",
+  "Anyone chill",
+  "Other",
+];
+const AWKWARD_OPTIONS = [
+  "Not knowing who will show up",
+  "Worrying it’ll feel like a date",
+  "Not wanting a huge group",
+  "Not knowing what to talk about",
+  "Safety / trust",
+  "Nothing, I’m comfortable meeting new people",
+  "Other",
+];
+
 export default function Home() {
   const [splashFading, setSplashFading] = useState(false);
   const [splashGone, setSplashGone] = useState(false);
   const [email, setEmail] = useState("");
+  const [signupEmail, setSignupEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
+  const [showQuestionnaire, setShowQuestionnaire] = useState(false);
+  const [questionnaireDone, setQuestionnaireDone] = useState(false);
+  const [questionnaireStatus, setQuestionnaireStatus] = useState<"idle" | "loading" | "error">("idle");
+  const [questionnaireMessage, setQuestionnaireMessage] = useState("");
+  const [questionnaire, setQuestionnaire] = useState<QuestionnaireAnswers>(INITIAL_QUESTIONNAIRE);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -523,6 +576,50 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
+  function toggleSelection(field: "tableTypes" | "peopleToMeet" | "awkwardReasons", value: string) {
+    setQuestionnaire((current) => {
+      const selected = current[field].includes(value);
+      return {
+        ...current,
+        [field]: selected ? current[field].filter((item) => item !== value) : [...current[field], value],
+      };
+    });
+  }
+
+  function closeQuestionnaire() {
+    setShowQuestionnaire(false);
+    setQuestionnaireStatus("idle");
+    setQuestionnaireMessage("");
+  }
+
+  async function handleQuestionnaireSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setQuestionnaireStatus("loading");
+    setQuestionnaireMessage("");
+
+    try {
+      const res = await fetch("/api/questionnaire", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: signupEmail, ...questionnaire }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        setQuestionnaireStatus("error");
+        setQuestionnaireMessage(data.error ?? "Something went wrong. Please try again.");
+        return;
+      }
+
+      setQuestionnaireDone(true);
+      setQuestionnaireStatus("idle");
+      setQuestionnaireMessage("");
+    } catch {
+      setQuestionnaireStatus("error");
+      setQuestionnaireMessage("Network error. Please try again.");
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setStatus("loading");
@@ -538,6 +635,13 @@ export default function Home() {
         setStatus("error");
         setMessage(data.error ?? "Something went wrong. Please try again.");
       } else {
+        const normalizedEmail = email.trim().toLowerCase();
+        setSignupEmail(normalizedEmail);
+        setQuestionnaire(INITIAL_QUESTIONNAIRE);
+        setQuestionnaireDone(false);
+        setQuestionnaireStatus("idle");
+        setQuestionnaireMessage("");
+        setShowQuestionnaire(true);
         setStatus("success");
         setMessage("You\u2019re on the list. We\u2019ll lyk when the table\u2019s ready.");
         setEmail("");
@@ -735,6 +839,132 @@ export default function Home() {
           <p>© 2026 Tablr.</p>
         </footer>
       </div>
+      {showQuestionnaire && (
+        <div className="questionnaire-overlay" role="dialog" aria-modal="true" aria-labelledby="questionnaire-title">
+          <div className="questionnaire-modal">
+            <button type="button" className="questionnaire-close" aria-label="Close questionnaire" onClick={closeQuestionnaire}>
+              ×
+            </button>
+
+            {questionnaireDone ? (
+              <div className="questionnaire-complete">
+                <div className="questionnaire-complete-icon">✓</div>
+                <h2>Thank you for supporting Tablr.</h2>
+                <p>We&apos;ll use your answers to send better table invites as early access opens.</p>
+                <button type="button" className="questionnaire-submit" onClick={closeQuestionnaire}>
+                  Done
+                </button>
+              </div>
+            ) : (
+              <form className="questionnaire-form" onSubmit={handleQuestionnaireSubmit}>
+                <div className="questionnaire-header">
+                  <p className="section-label">Quick questions</p>
+                  <h2 id="questionnaire-title">Help us build better tables</h2>
+                  <p>Answer 4 quick questions so we know what kind of meals and people to invite you to.</p>
+                </div>
+
+                <div className="questionnaire-question">
+                  <h3>1. What year are you?</h3>
+                  <div className="questionnaire-options">
+                    {YEAR_OPTIONS.map((option) => (
+                      <button
+                        type="button"
+                        key={option}
+                        className={`questionnaire-chip ${questionnaire.year === option ? "selected" : ""}`}
+                        onClick={() => setQuestionnaire((current) => ({ ...current, year: option }))}
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="questionnaire-question">
+                  <h3>2. What kind of table would you actually join?</h3>
+                  <div className="questionnaire-options">
+                    {TABLE_TYPE_OPTIONS.map((option) => (
+                      <button
+                        type="button"
+                        key={option}
+                        className={`questionnaire-chip ${questionnaire.tableTypes.includes(option) ? "selected" : ""}`}
+                        onClick={() => toggleSelection("tableTypes", option)}
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="questionnaire-question">
+                  <h3>3. What type of people would you want to meet?</h3>
+                  <div className="questionnaire-options">
+                    {PEOPLE_OPTIONS.map((option) => (
+                      <button
+                        type="button"
+                        key={option}
+                        className={`questionnaire-chip ${questionnaire.peopleToMeet.includes(option) ? "selected" : ""}`}
+                        onClick={() => toggleSelection("peopleToMeet", option)}
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                  {questionnaire.peopleToMeet.includes("Other") && (
+                    <input
+                      type="text"
+                      className="questionnaire-text-input"
+                      placeholder="Tell us who else you want to meet"
+                      value={questionnaire.peopleOther}
+                      onChange={(e) => setQuestionnaire((current) => ({ ...current, peopleOther: e.target.value }))}
+                    />
+                  )}
+                </div>
+
+                <div className="questionnaire-question">
+                  <h3>4. What makes meeting new people over food awkward?</h3>
+                  <div className="questionnaire-options">
+                    {AWKWARD_OPTIONS.map((option) => (
+                      <button
+                        type="button"
+                        key={option}
+                        className={`questionnaire-chip ${questionnaire.awkwardReasons.includes(option) ? "selected" : ""}`}
+                        onClick={() => toggleSelection("awkwardReasons", option)}
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                  {questionnaire.awkwardReasons.includes("Other") && (
+                    <input
+                      type="text"
+                      className="questionnaire-text-input"
+                      placeholder="Tell us what else feels awkward"
+                      value={questionnaire.awkwardOther}
+                      onChange={(e) => setQuestionnaire((current) => ({ ...current, awkwardOther: e.target.value }))}
+                    />
+                  )}
+                </div>
+
+                <div className="questionnaire-question">
+                  <h3>Anything else you want us to know?</h3>
+                  <textarea
+                    className="questionnaire-textarea"
+                    placeholder="Questions, concerns, food spots, table ideas, or what would make you actually show up."
+                    value={questionnaire.anythingElse}
+                    onChange={(e) => setQuestionnaire((current) => ({ ...current, anythingElse: e.target.value }))}
+                  />
+                </div>
+
+                {questionnaireMessage && <p className="feedback feedback-error">{questionnaireMessage}</p>}
+
+                <button type="submit" className="questionnaire-submit" disabled={questionnaireStatus === "loading"}>
+                  {questionnaireStatus === "loading" ? "Submitting…" : "Submit"}
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
 
     </>
   );

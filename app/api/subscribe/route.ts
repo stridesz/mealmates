@@ -8,7 +8,7 @@ async function appendToSheet(email: string): Promise<void> {
   const privateKey = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n");
   const sheetId = process.env.GOOGLE_SHEET_ID;
 
-  console.log("[MealMates] Env check:", {
+  console.log("[Tablr] Env check:", {
     hasEmail: !!serviceAccountEmail,
     hasKey: !!privateKey,
     hasSheetId: !!sheetId,
@@ -16,7 +16,7 @@ async function appendToSheet(email: string): Promise<void> {
 
   if (!serviceAccountEmail || !privateKey || !sheetId) {
     // Env vars not configured — log and skip sheet write
-    console.log("[MealMates] Waitlist signup (no sheet configured):", email);
+    console.log("[Tablr] Waitlist signup (no sheet configured):", email);
     return;
   }
 
@@ -37,7 +37,7 @@ async function appendToSheet(email: string): Promise<void> {
     },
   });
 
-  console.log("[MealMates] Appended to sheet:", email);
+  console.log("[Tablr] Appended to sheet:", email);
 }
 
 export async function POST(req: NextRequest) {
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true, message: "You're on the waitlist!" });
   } catch (err) {
-    console.error("[MealMates] Subscribe error:", err);
+    console.error("[Tablr] Subscribe error:", err);
     return NextResponse.json(
       { error: "Internal server error. Please try again." },
       { status: 500 }
