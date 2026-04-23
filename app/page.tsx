@@ -671,17 +671,17 @@ export default function Home() {
               <div className="how-card reveal reveal-delay-0">
                 <div className="how-number">1</div>
                 <h3>Drop your email & interests</h3>
-                <p>Tell us your school, what you&apos;re into, and when you usually eat. Takes 30 seconds.</p>
+                <p>Tell us your school, what you&apos;re into, and what you&apos;re trying to gain.</p>
               </div>
               <div className="how-card reveal reveal-delay-1">
                 <div className="how-number">2</div>
                 <h3>Find a table that fits your plans</h3>
-                <p>Browse hangs happening tonight or this week. Pick one that matches your vibe, major, or cravings.</p>
+                <p>Browse events happening tonight or this week. Pick one that matches your vibe, major, or cravings.</p>
               </div>
               <div className="how-card reveal reveal-delay-2">
                 <div className="how-number">3</div>
                 <h3>Show up, eat, and actually meet people</h3>
-                <p>RSVP, walk in, and sit down with people you&apos;d never run into otherwise. No apps, no small talk — just food.</p>
+                <p>It&apos;s a simple way to turn food into <strong>real connections</strong>.</p>
               </div>
             </div>
           </section>
