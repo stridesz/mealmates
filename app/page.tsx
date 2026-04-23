@@ -2,26 +2,6 @@
 
 import { useEffect, useState } from "react";
 
-function TablrLogo({ size = 40, badge = true }: { size?: number; badge?: boolean }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 96 96"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      <rect x="6" y="6" width="76" height="76" rx="24" fill="#34C759" />
-      <path
-        d="M29 29C29 25.6863 31.6863 23 35 23H61C64.3137 23 67 25.6863 67 29V31C67 34.3137 64.3137 37 61 37H54V63C54 66.3137 51.3137 69 48 69C44.6863 69 42 66.3137 42 63V37H35C31.6863 37 29 34.3137 29 31V29Z"
-        fill="white"
-      />
-      {badge && <circle cx="76" cy="76" r="12" fill="#FF9500" stroke="white" strokeWidth="4" />}
-    </svg>
-  );
-}
-
 // ── Discover phone mockup ───────────────────────────────────────────────
 type Tag = { kind: string; label: string };
 type Person = { initials: string; color: string };
@@ -369,7 +349,6 @@ const SCHOOLS = [
 ];
 
 export default function Home() {
-  const [dots, setDots] = useState(3);
   const [splashFading, setSplashFading] = useState(false);
   const [splashGone, setSplashGone] = useState(false);
   const [email, setEmail] = useState("");
@@ -377,18 +356,11 @@ export default function Home() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setDots((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          setSplashFading(true);
-          setTimeout(() => setSplashGone(true), 650);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 650);
-    return () => clearInterval(interval);
+    const timer = setTimeout(() => {
+      setSplashFading(true);
+      setTimeout(() => setSplashGone(true), 500);
+    }, 900);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -447,13 +419,9 @@ export default function Home() {
       {!splashGone && (
         <div className={`splash-overlay ${splashFading ? "splash-fade" : ""}`} aria-hidden="true">
           <div className="splash-card">
-            <TablrLogo size={60} />
-            <p className="splash-text">Every meal is better shared</p>
-            <div className="dots-row">
-              {Array.from({ length: 3 }).map((_, i) => (
-                <span key={i} className="dot" style={{ opacity: i < dots ? 1 : 0.14 }} />
-              ))}
-            </div>
+            <img src="/logo.png" alt="Tablr" width={72} height={72} className="splash-logo" />
+            <p className="splash-text">Tablr</p>
+            <p className="splash-sub">social dining, on campus</p>
           </div>
         </div>
       )}
@@ -462,7 +430,7 @@ export default function Home() {
         <nav className="navbar">
           <div className="nav-logo">
             <div className="nav-logo-icon">
-              <TablrLogo size={36} />
+              <img src="/logo.png" alt="Tablr" width={36} height={36} className="nav-logo-img" />
             </div>
             <div>
               <span className="wordmark">Tablr</span>

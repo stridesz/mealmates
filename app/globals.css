@@ -50,13 +50,15 @@ button, input { font: inherit; }
   display: flex; align-items: center; justify-content: center;
   padding: 1.5rem;
   background: rgba(248,255,248,0.96); backdrop-filter: blur(16px);
-  transition: opacity 0.65s ease, visibility 0.65s ease;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 .splash-fade { opacity: 0; visibility: hidden; }
-.splash-card { display: flex; flex-direction: column; align-items: center; gap: 1.2rem; text-align: center; }
-.splash-text { max-width: 28rem; color: #1a5a2c; font-size: clamp(1.45rem, 3vw, 2.4rem); font-weight: 700; line-height: 1.08; letter-spacing: -0.04em; }
-.dots-row { display: flex; gap: 0.65rem; align-items: center; }
-.dot { width: 10px; height: 10px; border-radius: 999px; background: #34C759; transition: opacity 0.24s ease; }
+.splash-card { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; text-align: center; }
+.splash-logo { width: 72px; height: 72px; border-radius: 20px; }
+.splash-text { color: #0d2614; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.04em; }
+.splash-sub { color: rgba(13,38,20,0.55); font-size: 0.9rem; font-weight: 500; }
+
+.nav-logo-img { width: 36px; height: 36px; border-radius: 10px; display: block; }
 
 .page-wrapper { position: relative; z-index: 1; min-height: 100vh; }
 
