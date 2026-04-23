@@ -432,6 +432,52 @@ button, input { font: inherit; }
 .how-card h3 { font-size: 1.15rem; line-height: 1.2; letter-spacing: -0.03em; color: #12331d; font-weight: 700; }
 .how-card p { margin-top: 0.6rem; color: rgba(18,51,29,0.7); font-size: 0.95rem; line-height: 1.6; }
 
+.vibe-section {
+  width: 100%;
+  background: #070a08;
+  padding: 4rem 0;
+  overflow: hidden;
+}
+.vibe-grid {
+  width: min(1180px, calc(100% - 2rem));
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 3rem;
+  align-items: center;
+}
+.vibe-image-wrap {
+  position: relative;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06);
+}
+.vibe-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.vibe-copy {
+  color: #fff;
+}
+.vibe-copy .section-label {
+  color: #34C759;
+  margin-bottom: 1rem;
+}
+.vibe-copy h2 {
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  line-height: 1.05;
+  letter-spacing: -0.05em;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+.vibe-copy p:last-child {
+  color: rgba(255,255,255,0.65);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  max-width: 28rem;
+}
+
 .proof-section {
   width: min(1180px, calc(100% - 2rem));
   margin: 0 auto;
@@ -492,6 +538,10 @@ button, input { font: inherit; }
   .how-grid { grid-template-columns: 1fr; }
   .how-it-works { width: min(100%, calc(100% - 1rem)); padding: 1.5rem 0 2.5rem; }
   .how-card { padding: 1.25rem; border-radius: 24px; }
+  .vibe-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .vibe-section { padding: 2.5rem 0; }
+  .vibe-copy { text-align: center; }
+  .vibe-copy p:last-child { margin: 0 auto; }
 }
 @media (max-width: 640px) {
   .navbar { width: min(100%, calc(100% - 1rem)); padding-top: 0.75rem; }
