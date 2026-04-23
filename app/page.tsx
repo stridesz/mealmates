@@ -534,7 +534,7 @@ export default function Home() {
         setMessage(data.error ?? "Something went wrong. Please try again.");
       } else {
         setStatus("success");
-        setMessage("You\u2019re on the list. We\u2019ll text the table when it\u2019s ready.");
+        setMessage("You\u2019re on the list. We\u2019ll lyk when the table\u2019s ready.");
         setEmail("");
       }
     } catch {
@@ -630,7 +630,7 @@ export default function Home() {
                 <button
                   type="submit"
                   disabled={status === "loading" || status === "success"}
-                  className="cta-btn"
+                  className={`cta-btn ${status === "success" ? "cta-btn-success" : ""}`}
                 >
                   {status === "loading" ? "Saving\u2026" : status === "success" ? "You\u2019re in" : "Join waitlist"}
                 </button>
