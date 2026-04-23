@@ -224,6 +224,7 @@ function MeetCard({ meet }: { meet: Meet }) {
   const accentColor = meet.tags[0]?.kind === "alert" ? "#FF9500" : meet.people[0]?.color || "#34C759";
   return (
     <div
+      className="phone-card"
       style={{
         background: "#fff",
         borderRadius: 20,
@@ -485,6 +486,10 @@ const SCHOOLS = [
   { name: "FIT", italic: false },
   { name: "Parsons", italic: true },
   { name: "UWash", italic: false },
+  { name: "UMiami", italic: true },
+  { name: "UCF", italic: false },
+  { name: "UChicago", italic: true },
+  { name: "Georgia Tech", italic: false },
 ];
 
 export default function Home() {
