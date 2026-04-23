@@ -464,6 +464,12 @@ button, input { font: inherit; }
   color: #34C759;
   margin-bottom: 1rem;
 }
+.vibe-label em {
+  font-style: italic;
+  text-decoration: underline wavy #34C759;
+  text-underline-offset: 5px;
+  text-decoration-thickness: 2px;
+}
 .vibe-copy h2 {
   font-size: clamp(1.8rem, 3.5vw, 2.8rem);
   line-height: 1.05;

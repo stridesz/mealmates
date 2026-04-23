@@ -697,9 +697,9 @@ export default function Home() {
                 <img src="/dinner-crew.png" alt="A group of college students laughing over pizza and pasta" className="vibe-img" />
               </div>
               <div className="vibe-copy">
-                <p className="section-label">The vibe</p>
+                <p className="section-label vibe-label">Our <em>Vibeee</em></p>
                 <h2>This is what showing up looks like</h2>
-                <p>No awkward intros. No forced networking. Just people who showed up for the same reason you did — good food, better company.</p>
+                <p>No awkward intros. No forced networking. Just people who showed up for the same reason you did. Good food, better company.</p>
               </div>
             </div>
           </section>
