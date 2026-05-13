@@ -690,9 +690,12 @@ export default function Home() {
               <p className="wordmark-sub">social dining, on campus</p>
             </div>
           </div>
-          <a href="#waitlist" className="nav-cta">
-            Join waitlist
-          </a>
+          <div className="nav-actions">
+            <a href="/app-preview" className="nav-link">App Preview</a>
+            <a href="#waitlist" className="nav-cta">
+              Join waitlist
+            </a>
+          </div>
         </nav>
 
         {/* School ticker */}
